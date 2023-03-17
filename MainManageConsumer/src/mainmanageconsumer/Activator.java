@@ -185,7 +185,7 @@ public class Activator implements BundleActivator {
 
 			switch (option) {
 				case 1:
-					// user.addUser();
+					user.addUser();
 					break;
 				case 2:
 					// user.updateUserByID();
@@ -194,7 +194,7 @@ public class Activator implements BundleActivator {
 					user.getAllUsers();
 					break;
 				case 4:
-					// user.getUserByID();
+					user.getUserByID();
 					break;
 				case 5:
 					// user.deleteUserByID();

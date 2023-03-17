@@ -25,7 +25,39 @@ public class AuthManageService implements AuthManageServiceInterface {
 	@Override
 	public void addUser() {
 
-		System.out.println("add User");
+		Scanner scan = new Scanner(System.in);
+		UserModel user = new UserModel();
+
+		System.out.println("Enter User ID: ");
+		user.setId(scan.nextInt());
+
+		System.out.println("Enter Username: ");
+		scan.nextLine();
+		user.setUsername(scan.nextLine());
+
+		System.out.println("Enter Email: ");
+		user.setEmail(scan.next());
+
+		System.out.println("Enter Password: ");
+		user.setPassword(scan.next());
+
+		System.out.println("Enter Phone: ");
+		user.setPhone(scan.next());
+
+		String insert = "INSERT INTO users (username, email,password,phone) VALUES('" + user.getUsername() + "', '"
+				+ user.getEmail() + "', '" + user.getPassword() + "', '" + user.getPhone() + "')";
+		try {
+
+			statement = connection.createStatement();
+			statement.executeUpdate(insert);
+			System.out.println("User Inserted Successfully");
+
+
+		} catch (SQLException exc) {
+			System.out.println("Error with Interted User");
+			System.out.println(exc.getMessage());
+
+		}
 
 	}
 
@@ -134,6 +166,12 @@ public class AuthManageService implements AuthManageServiceInterface {
 			System.out.println("\n");
 		}
 
+	}
+
+	@Override
+	public void getUserByID() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getUserByID'");
 	}
 
 }
