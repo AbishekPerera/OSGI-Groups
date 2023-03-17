@@ -6,5 +6,6 @@ public interface AuthManageServiceInterface {
     boolean authUser();
     void getAllUsers();
     void getUserByID();
+    void deleteUserByID();
 	
 }
