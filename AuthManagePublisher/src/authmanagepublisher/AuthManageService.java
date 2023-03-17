@@ -247,8 +247,68 @@ public class AuthManageService implements AuthManageServiceInterface {
 
 	@Override
 	public void updateUserByID() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'updateUserByID'");
+		
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::");
+		System.out.println("Update User by ID from Database");
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter User ID: ");
+		int id = scan.nextInt();
+
+		try {
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM users WHERE id = " + id);
+
+			if(resultSet.next()) {
+
+				UserModel user = new UserModel();
+
+				user.setId(resultSet.getInt("id"));
+				user.setUsername(resultSet.getString("username"));
+				user.setEmail(resultSet.getString("email"));
+				// user.setPassword(resultSet.getString("password"));
+				user.setPhone(resultSet.getString("phone"));
+				
+				System.out.printf("%-5s %-20s %-30s %-15s \n", "ID", "User Name", "Email",
+						"Phone", "");
+
+				System.out.printf("%-5d %-20s %-30s %-15s \n", user.getId(),
+						user.getUsername(), user.getEmail(), user.getPhone());
+				System.out.println("\n");
+				
+				System.out.println("Enter New User Name: ");
+				user.setUsername(scan.next());
+
+				System.out.println("Enter New User Email: ");
+				user.setEmail(scan.next());
+
+				System.out.println("Enter New User Password: ");
+				user.setPassword(scan.next());
+
+				System.out.println("Enter New User Phone: ");
+				user.setPhone(scan.next());
+
+				String update = "UPDATE users SET username = '" + user.getUsername() + "', email = '" + user.getEmail() + "', password = '" + user.getPassword() + "', phone = '" + user.getPhone() + "' WHERE id = " + user.getId();
+				int rows = statement.executeUpdate(update);
+				
+				if(rows > 0) {
+					System.out.println("User Updated Successfully");
+				}
+				else {
+					System.out.println("User not found");
+				}
+				
+			}
+			else {
+				System.out.println("User not found");
+			}
+			
+		} catch (SQLException exc) {
+			System.out.println("Error updating User from database");
+			System.out.println(exc.getMessage());
+		}
 	}
 
 }
