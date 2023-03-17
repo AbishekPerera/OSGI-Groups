@@ -1,0 +1,51 @@
+package authmanagepublisher;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javadatabasecon.JDBCDemo;
+import javadatabasecon.JDBCDemoInterface;
+
+public class AuthManageService implements AuthManageServiceInterface {
+	
+	
+
+	private Connection connection = null;
+	private Statement statement = null;
+	private ResultSet resultSet;
+	private JDBCDemoInterface database;
+	
+	
+	public AuthManageService() {
+		database = (JDBCDemoInterface) new JDBCDemo();
+		connection = database.connection();
+	}
+	
+
+	@Override
+	public void addUser() {
+
+		System.out.println("add User");
+
+	}
+
+	@Override
+	public boolean authUser() {
+
+		System.out.println("user User");
+		
+		return false;
+
+	}
+
+
+	@Override
+	public void getAllUsers() {
+		// TODO Auto-generated method stub
+		
+		
+		
+	}
+
+}

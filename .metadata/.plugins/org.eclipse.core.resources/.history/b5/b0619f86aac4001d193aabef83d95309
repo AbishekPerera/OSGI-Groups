@@ -1,0 +1,35 @@
+package mainmanageconsumer;
+
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+
+import authmanagepublisher.AuthManageServiceInterface;
+
+public class Activator implements BundleActivator {
+
+	ServiceReference AuthServiceReference;
+
+	public void start(BundleContext bundleContext) throws Exception {
+		System.out.println("Start Subscriber Service");
+
+		AuthServiceReference = bundleContext.getServiceReference(AuthManageServiceInterface.class.getName());
+		@SuppressWarnings("unchecked")
+		AuthManageServiceInterface user = (AuthManageServiceInterface) bundleContext.getService(AuthServiceReference);
+
+		MainIn(user);
+	}
+
+	public void stop(BundleContext bundleContext) throws Exception {
+		System.out.println("Good Bye!");
+		bundleContext.ungetService(AuthServiceReference);
+	}
+	
+	private void MainIn(AuthManageServiceInterface user) {
+		
+		boolean IsLogedIn = user.authUser();
+		System.out.println(IsLogedIn);
+	
+	}
+
+}

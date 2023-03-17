@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BillManagePublisher
+Bundle-SymbolicName: BillManagePublisher
+Bundle-Version: 1.0.0.qualifier
+Export-Package: billmanagepublisher
+Bundle-Activator: billmanagepublisher.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Import-Package: javadatabasecon,
+ org.osgi.framework;version="1.3.0"

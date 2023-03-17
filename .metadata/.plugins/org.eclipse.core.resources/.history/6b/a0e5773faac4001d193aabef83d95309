@@ -1,0 +1,21 @@
+package authmanagepublisher;
+
+public class AuthManageService implements AuthManageServiceInterface {
+
+	@Override
+	public void addUser() {
+
+		System.out.println("add User");
+
+	}
+
+	@Override
+	public boolean authUser() {
+
+		System.out.println("user User");
+		
+		return false;
+
+	}
+
+}
