@@ -80,20 +80,51 @@ public class employeeServiceImpl implements employeePublisher {
 	@Override
 	public void getAllEmployees() {
 
+		ArrayList<Employee> employeeList = new ArrayList<Employee>();
+
 		System.out.println("                                            All Employee Info\n");
 		System.out.println(
 				"------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", "Employee ID", "Employee Name", "Employee Email",
+		System.out.printf("%-20s%-20s%-20s%-40s%-20s%-20s\n", "Employee ID", "Employee Name", "Employee Email",
 				"Employee Address", "Employee Telephone", "Employee Type");
 		System.out.println(
 				"------------------------------------------------------------------------------------------------------------------------------");
 
-		for (Employee employee : employeeList) {
+		try {
 
-			System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpId(), employee.getEmpName(),
-					employee.getEmail(), employee.getAddress(), employee.getTelephone(), employee.getEmpType());
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM employee");
+
+			while (resultSet.next()) {
+
+				Employee employee = new Employee();
+
+				employee.setEmpId(resultSet.getInt("empId"));
+				employee.setEmpName(resultSet.getString("empName"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setTelephone(resultSet.getString("telephone"));
+				employee.setEmpType(resultSet.getString("empType"));
+
+				employeeList.add(employee);
+			}
+
+		} catch (SQLException exc) {
+			System.out.println("Error with Interted Employees");
+			System.out.println(exc.getMessage());
 
 		}
+
+
+		for (Employee employee : employeeList) {
+
+		System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpId(),
+		employee.getEmpName(),
+		employee.getEmail(), employee.getAddress(), employee.getTelephone(),
+		employee.getEmpType());
+
+		}
+
 		System.out.println(
 				"------------------------------------------------------------------------------------------------------------------------------");
 	}
