@@ -231,16 +231,31 @@ public class employeeServiceImpl implements employeePublisher {
 		System.out.print("Enter Employee ID : ");
 		empId = sc.nextInt();
 
-		if (employeeList.removeIf(employee -> employee.getEmpId() == empId)) {
-			System.out.println("----------------------------------------------------------------");
-			System.out.println("  Employee with the Employee ID: " + empId + " Deleted Successfully");
-			System.out.println("----------------------------------------------------------------");
-			System.out.println("");
-		} else {
-			System.out.println("----------------------------------------------------------");
-			System.out.println("There exist NO employee with the Employee ID: " + empId);
-			System.out.println("----------------------------------------------------------");
+		String deleteQuery = "DELETE FROM employee WHERE empId = '" + empId + "'";
+
+		try{
+
+			statement = connection.createStatement();
+			int rowsDeleted = statement.executeUpdate(deleteQuery);
+
+			if (rowsDeleted > 0) {
+				System.out.println("----------------------------------------------------------------");
+				System.out.println("  Employee with the Employee ID: " + empId + " Deleted Successfully");
+				System.out.println("----------------------------------------------------------------");
+				System.out.println("");
+			} else {
+				System.out.println("----------------------------------------------------------");
+				System.out.println("There exist NO employee with the Employee ID: " + empId);
+				System.out.println("----------------------------------------------------------");
+			}
+
+		} catch (SQLException exc) {
+
+			System.out.println("Error deleting Employee with ID " + empId);
+			System.out.println(exc.getMessage());
 		}
+
+		System.out.println("\n");
 
 	}
 
