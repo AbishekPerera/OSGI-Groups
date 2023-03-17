@@ -79,7 +79,7 @@ public class Activator implements BundleActivator {
 						employeeManagement();
 						break;
 					case 5:
-						adminManagement();
+						adminManagement(user);
 						break;
 					default:
 						System.out.println("Invalid Input");
@@ -162,9 +162,52 @@ public class Activator implements BundleActivator {
 
 	}
 
-	public void adminManagement() {
+	public void adminManagement(AuthManageServiceInterface user) {
 
-		System.out.println("Admin Management System");
+		int option;
+		String subOption = "y";
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\n");
+
+		while (subOption.equalsIgnoreCase("y")) {
+			System.out.println("----------Admin Management System----------\n");
+			System.out.println("1  - Add Admin");
+			System.out.println("2  - Update Admin");
+			System.out.println("3  - View All Admins");
+			System.out.println("4  - Search Admin by ID");
+			System.out.println("5  - Delete Admin");
+			System.out.println("\n--------------------------------------------------");
+
+			System.out.println("Enter the number of the operation you want to perform: ");
+			option = sc.nextInt();
+
+			switch (option) {
+				case 1:
+					// user.addUser();
+					break;
+				case 2:
+					// user.updateUserByID();
+					break;
+				case 3:
+					user.getAllUsers();
+					break;
+				case 4:
+					// user.getUserByID();
+					break;
+				case 5:
+					// user.deleteUserByID();
+					break;
+				default:
+					System.out.println("Invalid Input");
+					break;
+			}
+
+			System.out.println("\n Do you want to perform another operation? (y/n)");
+			subOption = sc.next().trim();
+		}
+		
 
 	}
 

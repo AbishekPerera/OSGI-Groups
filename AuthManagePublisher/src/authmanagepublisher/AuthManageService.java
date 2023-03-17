@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javadatabasecon.JDBCDemo;
@@ -50,26 +51,23 @@ public class AuthManageService implements AuthManageServiceInterface {
 				statement = connection.createStatement();
 				String SelectAll = "SELECT * FROM users";
 				resultSet = statement.executeQuery(SelectAll);
-	
-				// checking user name and password 
+
+				// checking user name and password
 
 				while (resultSet.next()) {
 					String name = resultSet.getString("username");
 					String pass = resultSet.getString("password");
-	
+
 					if (name.equals(username) && pass.equals(password)) {
 						System.out.println("Login Successfull");
 						isPass = true;
 						break;
 					}
-	
+
 				}
-	
-				resultSet.close();
-				statement.close();
-	
+
 			} catch (SQLException e) {
-	
+
 				e.printStackTrace();
 			}
 
@@ -96,26 +94,44 @@ public class AuthManageService implements AuthManageServiceInterface {
 	public void getAllUsers() {
 		// TODO Auto-generated method stub
 
+		ArrayList<UserModel> userList = new ArrayList<UserModel>();
+
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::");
+		System.out.println("Loading All Users from Database");
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
 		try {
+
 			statement = connection.createStatement();
-			String SelectAll = "SELECT * FROM users";
-			resultSet = statement.executeQuery(SelectAll);
+			resultSet = statement.executeQuery("SELECT * FROM users");
 
-			// Iterate through the ResultSet and print the values of each column
 			while (resultSet.next()) {
-				int id = resultSet.getInt("id");
-				String name = resultSet.getString("username");
-				String email = resultSet.getString("email");
 
-				System.out.println("User ID: " + id + ", Name: " + name + ", Email: " + email);
+				UserModel user = new UserModel();
+
+				user.setId(resultSet.getInt("id"));
+				user.setUsername(resultSet.getString("username"));
+				user.setEmail(resultSet.getString("email"));
+				// user.setPassword(resultSet.getString("password"));
+				user.setPhone(resultSet.getString("phone"));
+
+				userList.add(user);
 			}
 
-			resultSet.close();
-			statement.close();
+		} catch (SQLException exc) {
 
-		} catch (SQLException e) {
+			System.out.println("Error with Interted Users");
+			System.out.println(exc.getMessage());
 
-			e.printStackTrace();
+		}
+
+		System.out.printf("%-5s %-20s %-30s %-15s \n", "ID", "User Name", "Email",
+				"Phone", "");
+
+		for (UserModel user : userList) {
+			System.out.printf("%-5d %-20s %-30s %-15s \n", user.getId(),
+					user.getUsername(), user.getEmail(), user.getPhone());
+			System.out.println("\n");
 		}
 
 	}
