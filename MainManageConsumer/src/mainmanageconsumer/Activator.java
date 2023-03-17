@@ -8,11 +8,13 @@ import org.osgi.framework.ServiceReference;
 
 import authmanagepublisher.AuthManageServiceInterface;
 import billmanagepublisher.BillManageServiceInterface;
+import employeemanagement.employeePublisher;
 
 public class Activator implements BundleActivator {
 
 	ServiceReference AuthServiceReference;
 	ServiceReference BillServiceReference;
+	ServiceReference EmpServiceReference;
 
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -25,6 +27,10 @@ public class Activator implements BundleActivator {
 		BillServiceReference = bundleContext.getServiceReference(BillManageServiceInterface.class.getName());
 		@SuppressWarnings("unchecked")
 		BillManageServiceInterface bill = (BillManageServiceInterface) bundleContext.getService(BillServiceReference);
+		
+		EmpServiceReference = bundleContext.getServiceReference(employeePublisher.class.getName());
+		@SuppressWarnings("unchecked")
+		employeePublisher emp = (employeePublisher) bundleContext.getService(EmpServiceReference);
 
 		MainIn(user,bill);
 	}
