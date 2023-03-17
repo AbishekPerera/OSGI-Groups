@@ -7,10 +7,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import authmanagepublisher.AuthManageServiceInterface;
+import billmanagepublisher.BillManageServiceInterface;
 
 public class Activator implements BundleActivator {
 
 	ServiceReference AuthServiceReference;
+	ServiceReference BillServiceReference;
+
 
 	public void start(BundleContext bundleContext) throws Exception {
 		System.out.println("Start Subscriber Service");
@@ -19,7 +22,11 @@ public class Activator implements BundleActivator {
 		@SuppressWarnings("unchecked")
 		AuthManageServiceInterface user = (AuthManageServiceInterface) bundleContext.getService(AuthServiceReference);
 
-		MainIn(user);
+		BillServiceReference = bundleContext.getServiceReference(BillManageServiceInterface.class.getName());
+		@SuppressWarnings("unchecked")
+		BillManageServiceInterface bill = (BillManageServiceInterface) bundleContext.getService(BillServiceReference);
+
+		MainIn(user,bill);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
@@ -27,7 +34,7 @@ public class Activator implements BundleActivator {
 		bundleContext.ungetService(AuthServiceReference);
 	}
 
-	private void MainIn(AuthManageServiceInterface user) {
+	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill) {
 
 		boolean IsLogedIn = user.authUser();
 		// System.out.println(IsLogedIn);
@@ -60,7 +67,7 @@ public class Activator implements BundleActivator {
 
 				switch (choice) {
 					case 1:
-						billManagement();
+						billManagement(bill);
 						break;
 					case 2:
 						stockManagement();
@@ -89,9 +96,47 @@ public class Activator implements BundleActivator {
 
 	}
 
-	public void billManagement() {
+	public void billManagement(BillManageServiceInterface bill) {
 
-		System.out.println("Bill Management System");
+		int option;
+		String subOption = "y";
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\n");
+
+		while (subOption.equalsIgnoreCase("y")) {
+			System.out.println("----------Bill Management System----------\n");
+			System.out.println("1  - Add Bill");
+			System.out.println("2  - Update Bill");
+			System.out.println("3  - Delete Bill");
+			System.out.println("4  - View All Bills");
+			System.out.println("\n--------------------------------------------------");
+
+			System.out.println("Enter the number of the operation you want to perform: ");
+			option = sc.nextInt();
+
+			switch (option) {
+				case 1:
+					bill.addBill();
+					break;
+				case 2:
+					bill.updateBillByID();
+					break;
+				case 3:
+					bill.deleteBillByID();
+					break;
+				case 4:
+					bill.getAllBills();
+					break;
+				default:
+					System.out.println("Invalid Input");
+					break;
+			}
+
+			System.out.println("Do you want to perform another operation? (y/n)");
+			subOption = sc.next().trim();
+		}
 
 	}
 
