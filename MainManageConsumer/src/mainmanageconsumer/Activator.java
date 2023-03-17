@@ -188,7 +188,7 @@ public class Activator implements BundleActivator {
 					user.addUser();
 					break;
 				case 2:
-					// user.updateUserByID();
+					user.updateUserByID();
 					break;
 				case 3:
 					user.getAllUsers();
@@ -197,7 +197,7 @@ public class Activator implements BundleActivator {
 					user.getUserByID();
 					break;
 				case 5:
-					// user.deleteUserByID();
+					user.deleteUserByID();
 					break;
 				default:
 					System.out.println("Invalid Input");

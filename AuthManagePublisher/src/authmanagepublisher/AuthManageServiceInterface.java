@@ -7,5 +7,6 @@ public interface AuthManageServiceInterface {
     void getAllUsers();
     void getUserByID();
     void deleteUserByID();
+    void updateUserByID();
 	
 }

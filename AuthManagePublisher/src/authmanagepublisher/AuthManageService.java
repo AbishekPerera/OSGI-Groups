@@ -217,8 +217,38 @@ public class AuthManageService implements AuthManageServiceInterface {
 
 	@Override
 	public void deleteUserByID() {
+		
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::");
+		System.out.println("Delete User by ID from Database");
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter User ID: ");
+		int id = scan.nextInt();
+
+		try {
+
+			statement = connection.createStatement();
+			int rows = statement.executeUpdate("DELETE FROM users WHERE id = " + id);
+
+			if(rows > 0) {
+				System.out.println("User Deleted Successfully");
+			}
+			else {
+				System.out.println("User not found");
+			}
+			
+		} catch (SQLException exc) {
+			System.out.println("Error deleting User from database");
+			System.out.println(exc.getMessage());
+		}
+
+	}
+
+	@Override
+	public void updateUserByID() {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'deleteUserByID'");
+		throw new UnsupportedOperationException("Unimplemented method 'updateUserByID'");
 	}
 
 }
