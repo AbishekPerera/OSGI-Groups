@@ -32,7 +32,7 @@ public class Activator implements BundleActivator {
 		@SuppressWarnings("unchecked")
 		employeePublisher emp = (employeePublisher) bundleContext.getService(EmpServiceReference);
 
-		MainIn(user,bill);
+		MainIn(user,bill,emp);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
@@ -40,7 +40,7 @@ public class Activator implements BundleActivator {
 		bundleContext.ungetService(AuthServiceReference);
 	}
 
-	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill) {
+	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill, employeePublisher emp) {
 
 		boolean IsLogedIn = user.authUser();
 		// System.out.println(IsLogedIn);
@@ -82,7 +82,7 @@ public class Activator implements BundleActivator {
 						supplierManagement();
 						break;
 					case 4:
-						employeeManagement();
+						employeeManagement(emp);
 						break;
 					case 5:
 						adminManagement(user);
@@ -162,9 +162,51 @@ public class Activator implements BundleActivator {
 
 	}
 
-	public void employeeManagement() {
+	public void employeeManagement(employeePublisher emp) {
 
-		System.out.println("Employee Management System");
+		int option;
+		String subOption = "y";
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\n");
+
+		while (subOption.equalsIgnoreCase("y")) {
+			System.out.println("----------Employee Management System----------\n");
+			System.out.println("1  - Add Employee");
+			System.out.println("2  - Update Employee");
+			System.out.println("3  - View All Employees");
+			System.out.println("4  - Search Employee by ID");
+			System.out.println("5  - Delete Employee");
+			System.out.println("\n--------------------------------------------------");
+
+			System.out.println("Enter the number of the operation you want to perform: ");
+			option = sc.nextInt();
+
+			switch (option) {
+				case 1:
+					emp.addEmployee();
+					break;
+				case 2:
+					emp.updateEmployee();
+					break;
+				case 3:
+					emp.getAllEmployees();
+					break;
+				case 4:
+					emp.getEmployeeById();
+					break;
+				case 5:
+					emp.deleteEmployee();
+					break;
+				default:
+					System.out.println("Invalid Input");
+					break;
+			}
+
+			System.out.println("\n Do you want to perform another operation? (y/n)");
+			subOption = sc.next().trim();
+		}
 
 	}
 

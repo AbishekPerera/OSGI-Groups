@@ -8,6 +8,10 @@ public class Employee {
 	private String telephone;
 	private String empType;
 	
+	public Employee() {
+		
+	}
+	
 	
 	public Employee(int empId, String empName, String email, String address, String telephone, String empType) {
 		super();
