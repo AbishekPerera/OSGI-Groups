@@ -130,30 +130,45 @@ public class BillManageService implements BillManageServiceInterface {
 
 	@Override
 	public void getBillByID() {
-		// TODO Auto-generated method stub
-
 		int billId;
-
+	
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::");
-		System.out.println("Gey Bill by Id from Database");
+		System.out.println("Get Bill by ID from Database");
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
-
-		System.out.print("Enter Bill ID : ");
+	
+		System.out.print("Enter Bill ID: ");
 		billId = Integer.parseInt(scan.next().trim());
-
-		System.out.printf("%-5s %-20s %-15s %-15s %-15s %-10s %-10s %-10s %-10s\n", "ID", "Customer Name",
-				"Phone Model", "Phone Brand", "Phone IMEI", "Phone Price", "Discount", "Total", "");
-		for (BillModel bill : billList) {
-			if (bill.getId() == billId) {
+	
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM bills WHERE id = " + billId);
+	
+			if (resultSet.next()) {
+				BillModel bill = new BillModel();
+	
+				bill.setId(resultSet.getInt("id"));
+				bill.setCusName(resultSet.getString("CusName"));
+				bill.setPhoneModel(resultSet.getString("PhoneModel"));
+				bill.setPhoneBrand(resultSet.getString("PhoneBrand"));
+				bill.setPhoneImei(resultSet.getString("PhoneImei"));
+				bill.setPrice(resultSet.getDouble("price"));
+				bill.setDiscount(resultSet.getDouble("discount"));
+				bill.setTotal(resultSet.getDouble("total"));
+	
+				System.out.printf("%-5s %-20s %-15s %-15s %-15s %-10s %-10s %-10s %-10s\n", "ID", "Customer Name",
+					"Phone Model", "Phone Brand", "Phone IMEI", "Phone Price", "Discount", "Total", "");
 				System.out.printf("%-5d %-20s %-15s %-15s %-15s %-10.2f %-10.2f %-10.2f\n", bill.getId(),
-						bill.getCusName(), bill.getPhoneModel(), bill.getPhoneBrand(), bill.getPhoneImei(),
-						bill.getPrice(), bill.getDiscount(), bill.getTotal());
-				return;
+					bill.getCusName(), bill.getPhoneModel(), bill.getPhoneBrand(), bill.getPhoneImei(),
+					bill.getPrice(), bill.getDiscount(), bill.getTotal());
+			} else {
+				System.out.println("No bill found with the given ID");
 			}
+		} catch (SQLException exc) {
+			System.out.println("Error retrieving bill from database");
+			System.out.println(exc.getMessage());
 		}
-		System.out.println("No customer found with the given ID");
 	}
-
+	
 	@Override
 	public void updateBillByID() {
 		// TODO Auto-generated method stub

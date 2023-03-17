@@ -86,7 +86,7 @@ public class Activator implements BundleActivator {
 						break;
 				}
 
-				System.out.println("Do you want to access another system? (y/n)");
+				System.out.println("\nDo you want to access another system? (y/n)");
 				subOption = sc.next().trim();
 			}
 
@@ -110,7 +110,8 @@ public class Activator implements BundleActivator {
 			System.out.println("1  - Add Bill");
 			System.out.println("2  - Update Bill");
 			System.out.println("3  - View All Bills");
-			System.out.println("4  - Delete Bill");
+			System.out.println("4  - Search Bill by ID");
+			System.out.println("5  - Delete Bill");
 			System.out.println("\n--------------------------------------------------");
 
 			System.out.println("Enter the number of the operation you want to perform: ");
@@ -127,6 +128,9 @@ public class Activator implements BundleActivator {
 					bill.getAllBills();
 					break;
 				case 4:
+					bill.getBillByID();
+					break;
+				case 5:
 					bill.deleteBillByID();
 					break;
 				default:
@@ -134,7 +138,7 @@ public class Activator implements BundleActivator {
 					break;
 			}
 
-			System.out.println("Do you want to perform another operation? (y/n)");
+			System.out.println("/n Do you want to perform another operation? (y/n)");
 			subOption = sc.next().trim();
 		}
 
