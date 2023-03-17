@@ -109,8 +109,8 @@ public class Activator implements BundleActivator {
 			System.out.println("----------Bill Management System----------\n");
 			System.out.println("1  - Add Bill");
 			System.out.println("2  - Update Bill");
-			System.out.println("3  - Delete Bill");
-			System.out.println("4  - View All Bills");
+			System.out.println("3  - View All Bills");
+			System.out.println("4  - Delete Bill");
 			System.out.println("\n--------------------------------------------------");
 
 			System.out.println("Enter the number of the operation you want to perform: ");
@@ -124,10 +124,10 @@ public class Activator implements BundleActivator {
 					bill.updateBillByID();
 					break;
 				case 3:
-					bill.deleteBillByID();
+					bill.getAllBills();
 					break;
 				case 4:
-					bill.getAllBills();
+					bill.deleteBillByID();
 					break;
 				default:
 					System.out.println("Invalid Input");

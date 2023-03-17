@@ -70,6 +70,7 @@ public class BillManageService implements BillManageServiceInterface {
 			statement = connection.createStatement();
 			statement.executeUpdate(insertBill);
 			System.out.println("Customer Inserted");
+
 		}catch (SQLException exc) {
 			System.out.println("Error with Interted bILL");
 			System.out.println(exc.getMessage());
@@ -86,6 +87,33 @@ public class BillManageService implements BillManageServiceInterface {
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println("Loading All Bills from Database");
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
+		try{
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM bills");
+
+			while(resultSet.next()){
+
+				BillModel bill = new BillModel();
+
+				bill.setId(resultSet.getInt("id"));
+				bill.setCusName(resultSet.getString("CusName"));
+				bill.setPhoneModel(resultSet.getString("PhoneModel"));
+				bill.setPhoneBrand(resultSet.getString("PhoneBrand"));
+				bill.setPhoneImei(resultSet.getString("PhoneImei"));
+				bill.setPrice(resultSet.getDouble("price"));
+				bill.setDiscount(resultSet.getDouble("discount"));
+				bill.setTotal(resultSet.getDouble("total"));
+
+				billList.add(bill);
+			}
+
+		}catch (SQLException exc) {
+			System.out.println("Error with Interted bILL");
+			System.out.println(exc.getMessage());
+			
+		}
 
 		// Define the column headers
 		System.out.printf("%-5s %-20s %-15s %-15s %-15s %-10s %-10s %-10s %-10s\n", "ID", "Customer Name",
