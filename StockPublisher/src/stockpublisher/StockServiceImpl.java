@@ -245,18 +245,32 @@ public class StockServiceImpl implements IStockService {
 
 		int stockId;
 
+		System.out.println("::::::::::::::::::::::::::::::: Delete Stock ::::::::::::::::::::::::::::::");
+
 		System.out.println("Enter ID to delete stock : ");
 		stockId = scanner.nextInt();
 
-		for (StockModel stock : stockList) {
-			if (stock.getStockID() == stockId) {
-				stockList.remove(stock);
-				System.out.println("\nStock deleted successfully!!!");
-				return;
+		// Create a SQL statement
+		String sql = "DELETE FROM stock WHERE stockID = " + stockId;
+
+		try{
+
+			statement = connection.createStatement();
+			int rowsDeleted = statement.executeUpdate(sql);
+
+			if (rowsDeleted > 0) {
+				System.out.println("Stock deleted successfully!");
+			} else {
+				System.out.println("No stock found to delete!");
 			}
+
+		}catch (SQLException exc) {
+
+			System.out.println("Error deleting bill with ID " + stockId);
+			System.out.println(exc.getMessage());
 		}
 
-		System.out.println("No stock found to delete!");
+		System.out.println("\n");
 
 	}
 
