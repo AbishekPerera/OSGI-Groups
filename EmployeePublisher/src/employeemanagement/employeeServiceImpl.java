@@ -115,13 +115,12 @@ public class employeeServiceImpl implements employeePublisher {
 
 		}
 
-
 		for (Employee employee : employeeList) {
 
-		System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpId(),
-		employee.getEmpName(),
-		employee.getEmail(), employee.getAddress(), employee.getTelephone(),
-		employee.getEmpType());
+			System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpId(),
+					employee.getEmpName(),
+					employee.getEmail(), employee.getAddress(), employee.getTelephone(),
+					employee.getEmpType());
 
 		}
 
@@ -233,7 +232,7 @@ public class employeeServiceImpl implements employeePublisher {
 
 		String deleteQuery = "DELETE FROM employee WHERE empId = '" + empId + "'";
 
-		try{
+		try {
 
 			statement = connection.createStatement();
 			int rowsDeleted = statement.executeUpdate(deleteQuery);
@@ -270,50 +269,59 @@ public class employeeServiceImpl implements employeePublisher {
 		System.out.print("Enter Employee ID : ");
 		empId = sc.nextInt();
 
-		boolean found = false;
-		for (Employee employee : employeeList) {
-			if (employee.getEmpId() == empId) {
+		String query = "SELECT * FROM employee WHERE empId = '" + empId + "'";
+
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+
+			if (resultSet.next()) {
+
+				Employee employee = new Employee();
+				employee.setEmpId(resultSet.getInt("empId"));
+				employee.setEmpName(resultSet.getString("empName"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setTelephone(resultSet.getString("telephone"));
+				employee.setEmpType(resultSet.getString("empType"));
+
 				System.out.println(
 						"------------------------------------------------------------------------------------------------------------------------------");
+				System.out.println("                                      Existing Employee Details");
+				System.out.println(
+						"------------------------------------------------------------------------------------------------------------------------------");
+				System.out.println("Employee ID       : " + employee.getEmpId());
 				System.out.println("Employee Name     : " + employee.getEmpName());
 				System.out.println("Employee Email    : " + employee.getEmail());
-				System.out.println("Employee Adress   : " + employee.getAddress());
-				System.out.println("Employee TelNumber: " + employee.getTelephone());
+				System.out.println("Employee Address  : " + employee.getAddress());
+				System.out.println("Employee telNumber: " + employee.getTelephone());
 				System.out.println("Employee Type     : " + employee.getEmpType());
-				found = true;
 				System.out.println(
 						"------------------------------------------------------------------------------------------------------------------------------");
 
-			}
-		}
+				System.out.println("Do you want the tabular view? (y/n)");
+				String choice = sc.next();
 
-		if (!found) {
-			System.out.println("----------------------------------------------------------");
-			System.out.println("There exist NO employee with the Employee ID: " + empId);
-			System.out.println("----------------------------------------------------------");
-		} else {
-			System.out.println("Do you want the tabular view? (y/n)");
-			String choice = sc.next();
-			if (choice.equalsIgnoreCase("y")) {
-				System.out.println("\n");
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				System.out.printf("%-20s%-20s%-20s%-20s%-20s\n", "Employee Name", "Employee Email", "Employee Address",
-						"Employee Telephone", "Employee Type");
-				for (Employee employee : employeeList) {
-					if (employee.getEmpId() == empId) {
-						System.out.println(
-								"------------------------------------------------------------------------------------------------------------------------------");
-						System.out.printf("%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpName(), employee.getEmail(),
-								employee.getAddress(), employee.getTelephone(), employee.getEmpType());
-						System.out.println(
-								"------------------------------------------------------------------------------------------------------------------------------");
+				if (choice.equalsIgnoreCase("y")) {
+					System.out.printf("%-20s%-20s%-20s%-20s%-20s\n", "Employee Name", "Employee	Email",
+							"Employee Address", "Employee Telephone", "Employee Type");
 
-						break;
-					}
+					System.out.println(
+							"------------------------------------------------------------------------------------------------------------------------------");
+
+					System.out.printf("%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpName(), employee.getEmail(),
+							employee.getAddress(), employee.getTelephone(), employee.getEmpType());
+
 				}
-			}
 
+			} else {
+				System.out.println("----------------------------------------------------------");
+				System.out.println("There exist NO employee with the Employee ID: " + empId);
+				System.out.println("----------------------------------------------------------");
+			}
+		} catch (SQLException exc) {
+			System.out.println("Error retrieving Employee from database");
+			System.out.println(exc.getMessage());
 		}
 
 	}
