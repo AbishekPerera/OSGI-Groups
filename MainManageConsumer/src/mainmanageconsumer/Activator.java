@@ -9,12 +9,14 @@ import org.osgi.framework.ServiceReference;
 import authmanagepublisher.AuthManageServiceInterface;
 import billmanagepublisher.BillManageServiceInterface;
 import employeemanagement.employeePublisher;
+import stockpublisher.IStockService;
 
 public class Activator implements BundleActivator {
 
 	ServiceReference AuthServiceReference;
 	ServiceReference BillServiceReference;
 	ServiceReference EmpServiceReference;
+	ServiceReference StockServiceReference;
 
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -32,7 +34,11 @@ public class Activator implements BundleActivator {
 		@SuppressWarnings("unchecked")
 		employeePublisher emp = (employeePublisher) bundleContext.getService(EmpServiceReference);
 
-		MainIn(user,bill,emp);
+		StockServiceReference = bundleContext.getServiceReference(IStockService.class.getName());
+		@SuppressWarnings("unchecked")
+		IStockService stock = (IStockService) bundleContext.getService(StockServiceReference);
+
+		MainIn(user,bill,emp,stock);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
@@ -40,7 +46,7 @@ public class Activator implements BundleActivator {
 		bundleContext.ungetService(AuthServiceReference);
 	}
 
-	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill, employeePublisher emp) {
+	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill, employeePublisher emp, IStockService stock) {
 
 		boolean IsLogedIn = user.authUser();
 		// System.out.println(IsLogedIn);
@@ -76,7 +82,7 @@ public class Activator implements BundleActivator {
 						billManagement(bill);
 						break;
 					case 2:
-						stockManagement();
+						stockManagement(stock);
 						break;
 					case 3:
 						supplierManagement();
@@ -150,9 +156,53 @@ public class Activator implements BundleActivator {
 
 	}
 
-	public void stockManagement() {
+	public void stockManagement(IStockService stock) {
 
-		System.out.println("Stock Management System");
+		int option;
+		String subOption = "y";
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\n");
+
+		while (subOption.equalsIgnoreCase("y")) {
+			System.out.println("----------Stock Management System----------\n");
+			System.out.println("1  - Add Stock");
+			System.out.println("2  - Update Stock");
+			System.out.println("3  - View All Stocks");
+			System.out.println("4  - Search Stock by ID");
+			System.out.println("5  - Delete Stock");
+			System.out.println("\n--------------------------------------------------");
+
+			System.out.println("Enter the number of the operation you want to perform: ");
+			option = sc.nextInt();
+
+			switch (option) {
+				case 1:
+					stock.addStock();
+					break;
+				case 2:
+					stock.updateStockById();
+					break;
+				case 3:
+					stock.getAllStock();
+					break;
+				case 4:
+					stock.getStockById();
+					break;
+				case 5:
+					stock.deleteStockById();
+					break;
+				default:
+					System.out.println("Invalid Input");
+					break;
+			}
+
+			System.out.println("\n Do you want to perform another operation? (y/n)");
+			subOption = sc.next().trim();
+		}
+
+
 
 	}
 
