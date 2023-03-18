@@ -14,7 +14,7 @@ import javadatabasecon.JDBCDemoInterface;
 public class employeeServiceImpl implements employeePublisher {
 
 	Scanner sc = new Scanner(System.in);
-	private ArrayList<Employee> employeeList = new ArrayList<Employee>();
+	// private ArrayList<Employee> employeeList = new ArrayList<Employee>();
 
 	private Connection connection = null;
 	private Statement statement = null;
@@ -138,85 +138,116 @@ public class employeeServiceImpl implements employeePublisher {
 		System.out.print("Enter Employee ID : ");
 		empId = sc.nextInt();
 
-		boolean found = false;
-		for (Employee employee : employeeList) {
-			if (employee.getEmpId() == empId) {
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				System.out.println("                                      Existing Employee Details");
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				System.out.println("Employee ID       : " + employee.getEmpId());
-				System.out.println("Employee Name     : " + employee.getEmpName());
-				System.out.println("Employee Email    : " + employee.getEmail());
-				System.out.println("Employee Address  : " + employee.getAddress());
-				System.out.println("Employee telNumber: " + employee.getTelephone());
-				System.out.println("Employee Type     : " + employee.getEmpType());
-				found = true;
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
+		Employee employee = new Employee();
 
-				System.out.println("\n");
-				System.out.println("Which field do you want to update?");
-				System.out.println("1. Employee Name");
-				System.out.println("2. Employee Email");
-				System.out.println("3. Employee Address");
-				System.out.println("4. Employee Telephone");
-				System.out.println("5. Employee Type");
-				int choice = sc.nextInt();
+		try {
 
-				switch (choice) {
-					case 1:
-						System.out.print("Enter Employee Name : ");
-						String empName = sc.next();
-						employee.setEmpName(empName);
-						break;
-					case 2:
-						System.out.print("Enter Employee Email : ");
-						String email = sc.next();
-						employee.setEmail(email);
-						break;
-					case 3:
-						System.out.print("Enter Employee Address : ");
-						String address = sc.next();
-						employee.setAddress(address);
-						break;
-					case 4:
-						System.out.print("Enter Employee Telephone : ");
-						String telephone = sc.next();
-						employee.setTelephone(telephone);
-						break;
-					case 5:
-						System.out.print("Enter Employee Type : ");
-						String empType = sc.next();
-						employee.setEmpType(empType);
-						break;
-					default:
-						System.out.print("Invalid choice");
-				}
-				System.out.println("\n");
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				System.out.println("                                         Updated Employee Details");
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				System.out.println("Employee ID       : " + employee.getEmpId());
-				System.out.println("Employee Name     : " + employee.getEmpName());
-				System.out.println("Employee Email    : " + employee.getEmail());
-				System.out.println("Employee Address  : " + employee.getAddress());
-				System.out.println("Employee Telephone: " + employee.getTelephone());
-				System.out.println("Employee Type     : " + employee.getEmpType());
-				System.out.println(
-						"------------------------------------------------------------------------------------------------------------------------------");
-				break;
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM employee WHERE empId = " + empId);
+
+			if (resultSet.next()) {
+
+				employee.setEmpId(resultSet.getInt("empId"));
+				employee.setEmpName(resultSet.getString("empName"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setTelephone(resultSet.getString("telephone"));
+				employee.setEmpType(resultSet.getString("empType"));
+
+			} else {
+				System.out.println("Employee ID not found");
+				return;
 			}
+
+		} catch (SQLException exc) {
+			System.out.println("Error with Interted Employees");
+			System.out.println(exc.getMessage());
+
 		}
 
-		if (!found) {
-			System.out.println("----------------------------------------------------------");
-			System.out.println("There exist NO employee with the Employee ID: " + empId);
-			System.out.println("----------------------------------------------------------");
+		System.out.println(
+				"------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("                                      Existing Employee Details");
+		System.out.println(
+				"------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("Employee ID       : " + employee.getEmpId());
+		System.out.println("Employee Name     : " + employee.getEmpName());
+		System.out.println("Employee Email    : " + employee.getEmail());
+		System.out.println("Employee Address  : " + employee.getAddress());
+		System.out.println("Employee telNumber: " + employee.getTelephone());
+		System.out.println("Employee Type     : " + employee.getEmpType());
+		System.out.println(
+				"------------------------------------------------------------------------------------------------------------------------------");
+
+		System.out.println("Which field do you want to update?");
+
+		System.out.println("1. Employee Name");
+		System.out.println("2. Employee Email");
+		System.out.println("3. Employee Address");
+		System.out.println("4. Employee Telephone");
+		System.out.println("5. Employee Type");
+
+		int choice = sc.nextInt();
+
+		switch (choice) {
+			case 1:
+				System.out.print("Enter Employee Name : ");
+				sc.nextLine();
+				// String empName = sc.nextLine();
+				employee.setEmpName(sc.nextLine());
+				break;
+			case 2:
+				System.out.print("Enter Employee Email : ");
+				// String email = sc.next();
+				employee.setEmail(sc.next());
+				break;
+
+			case 3:
+				System.out.print("Enter Employee Address : ");
+				sc.nextLine();
+				// String address = sc.nextLine();
+				employee.setAddress(sc.nextLine());
+				break;
+
+			case 4:
+				System.out.print("Enter Employee Telephone : ");
+				// String telephone = sc.next();
+				employee.setTelephone(sc.next());
+				break;
+
+			case 5:
+				System.out.print("Enter Employee Type : ");
+				// String empType = sc.next();
+				employee.setEmpType(sc.next());
+				break;
+
+			default:
+				System.out.println("Invalid Choice");
+				break;
 		}
+
+		try{
+			statement = connection.createStatement();
+			statement.executeUpdate("UPDATE employee SET empName = '" + employee.getEmpName() + "', email = '" + employee.getEmail() + "', address = '" + employee.getAddress() + "', telephone = '" + employee.getTelephone() + "', empType = '" + employee.getEmpType() + "' WHERE empId = " + empId);
+		}catch(SQLException exc){
+			System.out.println("Error with Interted Employees");
+			System.out.println(exc.getMessage());
+		}
+
+		System.out.println("\n");
+		System.out.println(
+		"------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println(" Updated Employee Details");
+		System.out.println(
+		"------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("Employee ID : " + employee.getEmpId());
+		System.out.println("Employee Name : " + employee.getEmpName());
+		System.out.println("Employee Email : " + employee.getEmail());
+		System.out.println("Employee Address : " + employee.getAddress());
+		System.out.println("Employee Telephone: " + employee.getTelephone());
+		System.out.println("Employee Type : " + employee.getEmpType());
+		System.out.println(
+		"------------------------------------------------------------------------------------------------------------------------------");
 
 	}
 
