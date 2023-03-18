@@ -90,15 +90,33 @@ public class SupplierImpl implements ISupplier {
 
 	    System.out.println();
 
-	    System.out.printf("%-5s %-20s %-15s %-15s %-15s\n", "ID", "Supplier Name", "Mobile Number", "Company Name", "Address");
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM supplier WHERE id = "+supplierId);
 
-	    for (Supplier supplier : supplierList) {
-	        if (supplier.getId() == supplierId) {
-	            System.out.printf("%-5d %-20s %-15s %-15s %-15s\n", supplier.getId(), supplier.getSupName(), supplier.getTelephone(), supplier.getCompanyName(), supplier.getAddress());
-	            return;
-	        }
-	    }
-	    System.out.println("No supplier found with the given ID");
+			if(resultSet.next()){
+
+				Supplier supplier = new Supplier();
+
+				supplier.setId(resultSet.getInt("id"));
+				supplier.setSupName(resultSet.getString("supName"));
+				supplier.setTelephone(resultSet.getString("telephone"));
+				supplier.setCompanyName(resultSet.getString("companyName"));
+				supplier.setAddress(resultSet.getString("address"));
+
+				System.out.printf("%-5s %-20s %-15s %-15s %-15s\n", "ID", "Supplier Name", "Mobile Number", "Company Name", "Address");
+				System.out.printf("%-5d %-20s %-15s %-15s %-15s\n", supplier.getId(), supplier.getSupName(), supplier.getTelephone(), supplier.getCompanyName(), supplier.getAddress());
+
+			}else{
+				System.out.println("No supplier found with the given ID");
+			
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Error with Interting supplier");
+			e.printStackTrace();
+		}
+	
 	}
 
 	@Override
@@ -189,9 +207,33 @@ public class SupplierImpl implements ISupplier {
 
 	@Override
 	public void getAllSuppliers() {
+
+		ArrayList<Supplier> supplierList = new ArrayList<Supplier>();
+
 	    System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	    System.out.println("Loading All Suppliers from Database");
 	    System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT * FROM supplier");
+
+			while(resultSet.next()){
+				Supplier supplier = new Supplier();
+
+				supplier.setId(resultSet.getInt("id"));
+				supplier.setSupName(resultSet.getString("supName"));
+				supplier.setTelephone(resultSet.getString("telephone"));
+				supplier.setCompanyName(resultSet.getString("companyName"));
+				supplier.setAddress(resultSet.getString("address"));
+
+				supplierList.add(supplier);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error with Interting supplier");
+			e.printStackTrace();
+		}
 
 	    // Define the column headers
 	    System.out.printf("%-5s %-20s %-15s %-15s %-15s\n", "ID", "Supplier Name", "Mobile Number", "Company Name", "Address");
