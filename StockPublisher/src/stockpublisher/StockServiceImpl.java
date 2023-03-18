@@ -50,10 +50,10 @@ public class StockServiceImpl implements IStockService {
 
 		// Create a SQL statement
 		String sql = "INSERT INTO stock (stockName, stockModel, quantity, unitPrice) VALUES ('"
-			+ stock.getStockName() + "', '" + stock.getStockModel() + "', '"
+				+ stock.getStockName() + "', '" + stock.getStockModel() + "', '"
 				+ stock.getQuantity() + "', '" + stock.getUnitPrice() + "')";
 
-		try{
+		try {
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
 
@@ -61,7 +61,6 @@ public class StockServiceImpl implements IStockService {
 			System.out.println("Error with Interting Stock");
 			System.out.println(exc.getMessage());
 		}
-			
 
 		System.out.println("\nStock added successfully.\n");
 
@@ -131,14 +130,32 @@ public class StockServiceImpl implements IStockService {
 				"Unit Price");
 		System.out.println();
 
-		for (StockModel stock : stockList) {
-			if (stock.getStockID() == id) {
+		// Create a SQL statement
+		String sql = "SELECT * FROM stock WHERE stockID = " + id;
+
+		try {
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+
+			if (resultSet.next()) {
+				StockModel stock = new StockModel();
+				stock.setStockID(resultSet.getInt("stockID"));
+				stock.setStockName(resultSet.getString("stockName"));
+				stock.setStockModel(resultSet.getString("stockModel"));
+				stock.setQuantity(resultSet.getInt("quantity"));
+				stock.setUnitPrice(resultSet.getDouble("unitPrice"));
 				System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", stock.getStockID(), stock.getStockName(),
 						stock.getStockModel(), stock.getQuantity(), stock.getUnitPrice());
-				return;
+			} else {
+				System.out.println("No stock found");
 			}
+
+		} catch (SQLException exc) {
+			System.out.println("Error retrieving stock from database");
+			System.out.println(exc.getMessage());
 		}
-		System.out.println("No stock found");
+
 
 	}
 
