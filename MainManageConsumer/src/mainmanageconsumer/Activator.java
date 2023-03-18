@@ -10,6 +10,7 @@ import authmanagepublisher.AuthManageServiceInterface;
 import billmanagepublisher.BillManageServiceInterface;
 import employeemanagement.employeePublisher;
 import stockpublisher.IStockService;
+import supplyerpublisher.ISupplier;
 
 public class Activator implements BundleActivator {
 
@@ -17,6 +18,7 @@ public class Activator implements BundleActivator {
 	ServiceReference BillServiceReference;
 	ServiceReference EmpServiceReference;
 	ServiceReference StockServiceReference;
+	ServiceReference suplierServiceReference;
 
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -38,7 +40,12 @@ public class Activator implements BundleActivator {
 		@SuppressWarnings("unchecked")
 		IStockService stock = (IStockService) bundleContext.getService(StockServiceReference);
 
-		MainIn(user,bill,emp,stock);
+		suplierServiceReference = bundleContext.getServiceReference(ISupplier.class.getName());
+		@SuppressWarnings("unchecked")
+		ISupplier supplier = (ISupplier) bundleContext.getService(suplierServiceReference);
+
+
+		MainIn(user,bill,emp,stock,supplier);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
@@ -46,7 +53,7 @@ public class Activator implements BundleActivator {
 		bundleContext.ungetService(AuthServiceReference);
 	}
 
-	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill, employeePublisher emp, IStockService stock) {
+	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill, employeePublisher emp, IStockService stock,ISupplier supplier ) {
 
 		boolean IsLogedIn = user.authUser();
 		// System.out.println(IsLogedIn);
@@ -85,7 +92,7 @@ public class Activator implements BundleActivator {
 						stockManagement(stock);
 						break;
 					case 3:
-						supplierManagement();
+						supplierManagement(supplier);
 						break;
 					case 4:
 						employeeManagement(emp);
@@ -206,9 +213,51 @@ public class Activator implements BundleActivator {
 
 	}
 
-	public void supplierManagement() {
+	public void supplierManagement(ISupplier Supplier ) {
 
-		System.out.println("Supplier Management System");
+		int option;
+		String subOption = "y";
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("\n");
+
+		while (subOption.equalsIgnoreCase("y")) {
+			System.out.println("----------Supplier Management System----------\n");
+			System.out.println("1  - Add Supplier");
+			System.out.println("2  - Update Supplier");
+			System.out.println("3  - View All Suppliers");
+			System.out.println("4  - Search Supplier by ID");
+			System.out.println("5  - Delete Supplier");
+			System.out.println("\n--------------------------------------------------");
+
+			System.out.println("Enter the number of the operation you want to perform: ");
+			option = sc.nextInt();
+
+			switch (option) {
+				case 1:
+					Supplier.addSupplier();
+					break;
+				case 2:
+					Supplier.updateSupplier();
+					break;
+				case 3:
+					Supplier.getAllSuppliers();
+					break;
+				case 4:
+					Supplier.getSupplierByID();
+					break;
+				case 5:
+					Supplier.deleteSupplier();
+					break;
+				default:
+					System.out.println("Invalid Input");
+					break;
+			}
+
+			System.out.println("\n Do you want to perform another operation? (y/n)");
+			subOption = sc.next().trim();
+		}
 
 	}
 

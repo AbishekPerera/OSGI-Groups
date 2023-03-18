@@ -10,5 +10,6 @@ Import-Package: authmanagepublisher,
  billmanagepublisher,
  employeemanagement,
  org.osgi.framework;version="1.3.0",
- stockpublisher
+ stockpublisher,
+ supplyerpublisher
 Bundle-ActivationPolicy: lazy

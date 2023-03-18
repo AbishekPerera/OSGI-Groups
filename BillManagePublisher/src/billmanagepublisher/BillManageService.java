@@ -71,15 +71,13 @@ public class BillManageService implements BillManageServiceInterface {
 		try {
 			statement = connection.createStatement();
 			statement.executeUpdate(insertBill);
-			System.out.println("Customer Inserted");
+			System.out.println("Bill Inserted");
 
 		} catch (SQLException exc) {
 			System.out.println("Error with Interted bILL");
 			System.out.println(exc.getMessage());
 
 		}
-
-		System.out.println("\n Bill Added Successfully \n");
 
 	}
 
