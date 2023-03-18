@@ -154,18 +154,7 @@ public class employeeServiceImpl implements employeePublisher {
 				employee.setTelephone(resultSet.getString("telephone"));
 				employee.setEmpType(resultSet.getString("empType"));
 
-			} else {
-				System.out.println("Employee ID not found");
-				return;
-			}
-
-		} catch (SQLException exc) {
-			System.out.println("Error with Interted Employees");
-			System.out.println(exc.getMessage());
-
-		}
-
-		System.out.println(
+				System.out.println(
 				"------------------------------------------------------------------------------------------------------------------------------");
 		System.out.println("                                      Existing Employee Details");
 		System.out.println(
@@ -249,6 +238,18 @@ public class employeeServiceImpl implements employeePublisher {
 		System.out.println(
 		"------------------------------------------------------------------------------------------------------------------------------");
 
+			} else {
+				System.out.println("Employee ID not found");
+				return;
+			}
+
+		} catch (SQLException exc) {
+			System.out.println("Error with Interted Employees");
+			System.out.println(exc.getMessage());
+
+		}
+
+		
 	}
 
 	@Override

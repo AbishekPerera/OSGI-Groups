@@ -156,7 +156,6 @@ public class StockServiceImpl implements IStockService {
 			System.out.println(exc.getMessage());
 		}
 
-
 	}
 
 	@Override
@@ -175,67 +174,82 @@ public class StockServiceImpl implements IStockService {
 
 		System.out.println();
 
-		for (StockModel stock : stockList) {
-			if (stock.getStockID() == id) {
+		// Create a SQL statement
+		String sql = "SELECT * FROM stock WHERE stockID = " + id;
 
-				System.out.println("\n");
+		try {
 
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(sql);
+
+			if (resultSet.next()) {
+				StockModel stock = new StockModel();
+				stock.setStockID(resultSet.getInt("stockID"));
+				stock.setStockName(resultSet.getString("stockName"));
+				stock.setStockModel(resultSet.getString("stockModel"));
+				stock.setQuantity(resultSet.getInt("quantity"));
+				stock.setUnitPrice(resultSet.getDouble("unitPrice"));
 				System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", "Stock ID", "Stock Brand", "Stock Model",
 						"Quantity", "Unit Price");
-
 				System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", stock.getStockID(), stock.getStockName(),
 						stock.getStockModel(), stock.getQuantity(), stock.getUnitPrice());
-				System.out.println("\n");
 
 				System.out.println("Which data needs updating?");
-				System.out.println("1  - Stock ID");
-				System.out.println("2  - Stock Name");
-				System.out.println("3  - Quantity ");
+
+				System.out.println("1  - Stock Name");
+				System.out.println("2  - Stock Model");
+				System.out.println("3  - Quantity");
 				System.out.println("4  - Unit Price");
-				System.out.println("\n--------------------------");
 
+				System.out.print("Enter your choice : ");
 				choice = scanner.nextInt();
-
-				System.out.println(choice);
 
 				switch (choice) {
 					case 1:
-						System.out.print("Enter new Stock ID : ");
-						int newID = scanner.nextInt();
-						stock.setStockID(newID);
+						System.out.print("Enter new Stock Name : ");
+						String stockName = scanner.next();
+						sql = "UPDATE stock SET stockName = '" + stockName + "' WHERE stockID = " + id;
 						break;
+
 					case 2:
-						System.out.print("Enter new Stock Brand: ");
-						String newName = scanner.next().trim();
-						stock.setStockName(newName);
+						System.out.print("Enter new Stock Model : ");
+						String stockModel = scanner.next();
+						sql = "UPDATE stock SET stockModel = '" + stockModel + "' WHERE stockID = " + id;
 						break;
+
 					case 3:
-						System.out.print("Enter new Stock Model: ");
-						String newModel = scanner.next().trim();
-						stock.setStockModel(newModel);
+						System.out.print("Enter new Quantity : ");
+						int quantity = scanner.nextInt();
+						sql = "UPDATE stock SET quantity = " + quantity + " WHERE stockID = " + id;
 						break;
+
 					case 4:
-						System.out.print("Enter new Quantity: ");
-						int newQuantity = scanner.nextInt();
-						stock.setQuantity(newQuantity);
+						System.out.print("Enter new Unit Price : ");
+						double unitPrice = scanner.nextDouble();
+						sql = "UPDATE stock SET unitPrice = " + unitPrice + " WHERE stockID = " + id;
 						break;
-					case 5:
-						System.out.print("Enter new Unit Price: ");
-						double newUnitPrice = scanner.nextDouble();
-						stock.setUnitPrice(newUnitPrice);
-						break;
+
 					default:
-						System.out.println("Invalid choice!");
+						System.out.println("Invalid choice");
+						break;
 				}
 
-				System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", "Stock ID", "Stock Brand", "Stock Model",
-						"Quantity", "Unit Price");
-				System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", stock.getStockID(), stock.getStockName(),
-						stock.getStockModel(), stock.getQuantity(), stock.getUnitPrice());
-				System.out.println("\n");
+				try {
+					statement = connection.createStatement();
+					statement.executeUpdate(sql);
+					System.out.println("Stock updated successfully");
+				} catch (SQLException exc) {
+					System.out.println("Error updating stock");
+					System.out.println(exc.getMessage());
+				}
+				
 			} else {
-				System.out.println("Invalid Stock ID!!!");
+				System.out.println("No stock found");
 			}
+
+		} catch (SQLException exc) {
+			System.out.println("Error retrieving stock from database");
+			System.out.println(exc.getMessage());
 		}
 
 	}
@@ -253,7 +267,7 @@ public class StockServiceImpl implements IStockService {
 		// Create a SQL statement
 		String sql = "DELETE FROM stock WHERE stockID = " + stockId;
 
-		try{
+		try {
 
 			statement = connection.createStatement();
 			int rowsDeleted = statement.executeUpdate(sql);
@@ -264,7 +278,7 @@ public class StockServiceImpl implements IStockService {
 				System.out.println("No stock found to delete!");
 			}
 
-		}catch (SQLException exc) {
+		} catch (SQLException exc) {
 
 			System.out.println("Error deleting bill with ID " + stockId);
 			System.out.println(exc.getMessage());
