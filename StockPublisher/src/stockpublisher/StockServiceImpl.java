@@ -46,7 +46,22 @@ public class StockServiceImpl implements IStockService {
 		System.out.println("Enter Unit Price: ");
 		stock.setUnitPrice(scanner.nextDouble());
 
-		stockList.add(stock);
+		// stockList.add(stock);
+
+		// Create a SQL statement
+		String sql = "INSERT INTO stock (stockName, stockModel, quantity, unitPrice) VALUES ('"
+			+ stock.getStockName() + "', '" + stock.getStockModel() + "', '"
+				+ stock.getQuantity() + "', '" + stock.getUnitPrice() + "')";
+
+		try{
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+
+		} catch (SQLException exc) {
+			System.out.println("Error with Interting Stock");
+			System.out.println(exc.getMessage());
+		}
+			
 
 		System.out.println("\nStock added successfully.\n");
 
@@ -61,11 +76,10 @@ public class StockServiceImpl implements IStockService {
 		System.out.println("Retrieving All Stocks");
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 
-
 		// Create a SQL statement
 		String sql = "SELECT * FROM stock";
 
-		try{
+		try {
 			// Get the result set
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(sql);
@@ -80,7 +94,7 @@ public class StockServiceImpl implements IStockService {
 				stock.setUnitPrice(resultSet.getDouble("unitPrice"));
 				stockList1.add(stock);
 			}
-		}catch (SQLException exc) {
+		} catch (SQLException exc) {
 			System.out.println("Error with Interted bILL");
 			System.out.println(exc.getMessage());
 		}
