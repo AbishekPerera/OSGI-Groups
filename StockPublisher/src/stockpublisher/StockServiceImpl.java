@@ -31,8 +31,8 @@ public class StockServiceImpl implements IStockService {
 
 		StockModel stock = new StockModel();
 
-		System.out.println("\nEnter stock ID: ");
-		stock.setStockID(scanner.nextInt());
+		// System.out.println("\nEnter stock ID: ");
+		// stock.setStockID(scanner.nextInt());
 
 		System.out.println("Enter stock brand: ");
 		stock.setStockName(scanner.next());
@@ -194,14 +194,14 @@ public class StockServiceImpl implements IStockService {
 				System.out.printf("%-10s %-10s %-10s %-10s %-10s\n", stock.getStockID(), stock.getStockName(),
 						stock.getStockModel(), stock.getQuantity(), stock.getUnitPrice());
 
-				System.out.println("Which data needs updating?");
+				System.out.println("\nWhich data needs updating?");
 
 				System.out.println("1  - Stock Name");
 				System.out.println("2  - Stock Model");
 				System.out.println("3  - Quantity");
 				System.out.println("4  - Unit Price");
 
-				System.out.print("Enter your choice : ");
+				System.out.print("\nEnter your choice : ");
 				choice = scanner.nextInt();
 
 				switch (choice) {
@@ -230,7 +230,7 @@ public class StockServiceImpl implements IStockService {
 						break;
 
 					default:
-						System.out.println("Invalid choice");
+						System.out.println("\nInvalid choice\n");
 						break;
 				}
 

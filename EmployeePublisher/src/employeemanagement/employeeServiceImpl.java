@@ -117,7 +117,7 @@ public class employeeServiceImpl implements employeePublisher {
 
 		for (Employee employee : employeeList) {
 
-			System.out.printf("%-20s%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpId(),
+			System.out.printf("%-20s%-20s%-20s%-40s%-20s%-20s\n", employee.getEmpId(),
 					employee.getEmpName(),
 					employee.getEmail(), employee.getAddress(), employee.getTelephone(),
 					employee.getEmpType());
@@ -335,13 +335,13 @@ public class employeeServiceImpl implements employeePublisher {
 				String choice = sc.next();
 
 				if (choice.equalsIgnoreCase("y")) {
-					System.out.printf("%-20s%-20s%-20s%-20s%-20s\n", "Employee Name", "Employee	Email",
+					System.out.printf("%-20s%-20s%-40s%-20s%-20s\n", "Employee Name", "EmployeeEmail",
 							"Employee Address", "Employee Telephone", "Employee Type");
 
 					System.out.println(
 							"------------------------------------------------------------------------------------------------------------------------------");
 
-					System.out.printf("%-20s%-20s%-20s%-20s%-20s\n", employee.getEmpName(), employee.getEmail(),
+					System.out.printf("%-20s%-20s%-40s%-20s%-20s\n", employee.getEmpName(), employee.getEmail(),
 							employee.getAddress(), employee.getTelephone(), employee.getEmpType());
 
 				}
