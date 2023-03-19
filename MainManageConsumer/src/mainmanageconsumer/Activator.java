@@ -51,6 +51,11 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 		System.out.println("Good Bye!");
 		bundleContext.ungetService(AuthServiceReference);
+		bundleContext.ungetService(BillServiceReference);
+		bundleContext.ungetService(EmpServiceReference);
+		bundleContext.ungetService(StockServiceReference);
+		bundleContext.ungetService(suplierServiceReference);
+		
 	}
 
 	private void MainIn(AuthManageServiceInterface user, BillManageServiceInterface bill, employeePublisher emp, IStockService stock,ISupplier supplier ) {
@@ -73,9 +78,9 @@ public class Activator implements BundleActivator {
 			System.out.println("\n");
 
 			while (subOption.equalsIgnoreCase("y")) {
-				System.out.println("----------Home Page---------- \n");
+				System.out.println("---------- Main Menu ---------- \n");
 				System.out.println("1  - Bill Management System");
-				System.out.println("2  - Stcock Management System");
+				System.out.println("2  - Stock Management System");
 				System.out.println("3  - Supplier Management System");
 				System.out.println("4  - Employee Management System");
 				System.out.println("5  - Admin Management System");
@@ -104,6 +109,8 @@ public class Activator implements BundleActivator {
 						System.out.println("Invalid Input");
 						break;
 				}
+
+				System.out.println("\n :::::::::::::::::::::::::\n Redirecting to the Home Page... \n");
 
 				System.out.println("\n Do you want to access another system? (y/n)");
 				subOption = sc.next().trim();

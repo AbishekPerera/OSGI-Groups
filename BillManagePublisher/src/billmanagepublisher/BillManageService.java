@@ -32,11 +32,11 @@ public class BillManageService implements BillManageServiceInterface {
 
 		BillModel bill = new BillModel();
 
-		System.out.println("Enter Bill ID: ");
-		bill.setId(scan.nextInt());
+		// System.out.println("Enter Bill ID: ");
+		// bill.setId(scan.nextInt());
 
 		System.out.println("Enter Customer Name: ");
-		scan.nextLine();
+		// scan.nextLine();
 		bill.setCusName(scan.nextLine());
 
 		System.out.println("Enter Phone Model: ");
